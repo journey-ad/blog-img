@@ -19,7 +19,7 @@ function 加载圣·嘉然() {
   pio_reference = new Paul_Pio(
     {
       "mode": "fixed",
-      "hidden": false,
+      "hidden": true,
       "content": {
         "link": 引流[Math.floor(Math.random() * 引流.length)],
         "welcome": ["Hi!"],
