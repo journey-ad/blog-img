@@ -31,7 +31,10 @@ function 加载圣·嘉然() {
         ],
       },
       "night": "toggleNightMode()",
-      "model": ["https://cdn.jsdelivr.net/gh/journey-ad/blog-img/live2d/Diana/Diana.model3.json"],
+      "model": [
+        "https://cdn.jsdelivr.net/gh/journey-ad/blog-img/live2d/Diana/Diana.model3.json",
+        "https://cdn.jsdelivr.net/gh/journey-ad/blog-img/live2d/Ava/Ava.model3.json",
+      ],
       "tips": true
     }
   )
