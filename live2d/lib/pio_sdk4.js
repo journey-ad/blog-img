@@ -2,7 +2,8 @@
 
 # Pio SDK 2/3/4 support
 # By: jupiterbjy
-# Last Update: 2021.4.22
+# Modify: journey-ad
+# Last Update: 2021.5.4
 
 To use this, you need to include following sources to your HTML file first.
 With this script, you don't have to include `l2d.js`. Testing is done without it.
@@ -23,7 +24,7 @@ https://jupiterbjy.github.io/PaulPio_PIXI_Demo/
 ---- */
 
 
-function loadlive2d(canvas_id, json_object_or_url) {
+function loadlive2d(canvas_id, json_object_or_url, on_load) {
     // Replaces original l2d method 'loadlive2d' for Pio.
     // Heavily relies on pixi_live2d_display.
 
@@ -55,6 +56,7 @@ function loadlive2d(canvas_id, json_object_or_url) {
 
         // match canvas to model width
         canvas.width = model.width
+        canvas.height = model.height
         pio_refresh_style()
 
         // check alignment, and align model to corner
@@ -79,7 +81,11 @@ function loadlive2d(canvas_id, json_object_or_url) {
                 model.expression()
             }
         })
+        
+        on_load(model)
     })
+
+    return model
 }
 
 
@@ -114,7 +120,7 @@ function pio_refresh_style(){
     pio_container.classList.remove("left", "right")
     pio_container.classList.add(pio_alignment)
 
-    app.resizeTo = document.getElementById("pio")
+    // app.resizeTo = document.getElementById("pio")
 }
 
 
