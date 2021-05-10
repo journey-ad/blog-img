@@ -54,6 +54,7 @@ function 加载圣·嘉然() {
 }
 
 function onModelLoad(model) {
+  const container = document.getElementById("pio-container")
   const canvas = document.getElementById("pio")
   const modelNmae = model.internalModel.settings.name
   const coreModel = model.internalModel.coreModel
@@ -99,6 +100,7 @@ function onModelLoad(model) {
   }
 
   if (modelNmae === "Diana") {
+    container.dataset.model = "Diana"
     initConfig.content.skin[1] = ["我是吃货担当 嘉然 Diana~"]
     playAction({ motion: "Tap抱阿草-左手" })
 
@@ -142,6 +144,7 @@ function onModelLoad(model) {
     ]
 
   } else if (modelNmae === "Ava") {
+    container.dataset.model = "Ava"
     initConfig.content.skin[1] = ["我是<s>拉胯</s>Gamer担当 向晚 AvA~"]
     playAction({
       motion: "Tap左眼",
