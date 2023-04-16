@@ -2,6 +2,29 @@
   const css = `
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
 
+#view ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px 20px;
+}
+
+#view ul::before,
+#view ul::after {
+  display: none;
+}
+
+#view.view-icons .item:hover {
+  box-shadow: none;
+  outline: 1px solid;
+  outline-offset: 8px;
+  outline-style: dashed;
+  border-radius: 0;
+}
+
+#view.view-icons .item.folder-parent {
+  outline: none;
+}
+
 #pv-metadata-container {
   position: absolute;
   right: 10px;
