@@ -127,31 +127,39 @@
     addCss(css);
     await Promise.all(libs.map((url) => loadScript(url))) // 加载库文件
 
-    const isMobile = /Mobile|Android|iPhone|iPod|iPad/.test(navigator.userAgent);
+    const isMobile = /Mobile|Android|iPhone|iPod|iPad/i.test(navigator.userAgent);
+    const debouncedGetImgMetadata = debounce(() => {
+      const $img = document.querySelector('#pv-content-img')
+      $img && getImgMetadata($img, !isMobile);
+    }, 200)
 
     // 监听预览弹窗显示隐藏
-    const observer = new MutationObserver((mutation) => {
+    const pvObserver = new MutationObserver((mutation) => {
       const isPreview = !mutation[0].target.classList.contains('hidden'); // 预览弹窗是否显示
 
       if (isPreview) {
         // 预览弹窗显示时 获取图片元数据
-        debunce(() => {
-          const $img = document.querySelector('#pv-content-img')
-          $img && getImgMetadata($img, !isMobile);
-        }, 200)();
+        debouncedGetImgMetadata();
       } else {
         // 否则移除元数据容器
         document.querySelector('#pv-bar-meta')?.remove();
         document.querySelector('#pv-metadata-container')?.remove();
       }
     })
+
     // 监听预览弹窗class变化
-    observer.observe(document.querySelector('#pv-overlay'), { attributes: true })
+    new MutationObserver((mutations, observer) => {
+      const $pvContainer = document.querySelector('#pv-overlay')
+      if ($pvContainer) {
+        observer.disconnect();
+        pvObserver.observe($pvContainer, { attributes: true })
+      }
+    })
+      .observe(document.body, { childList: true, subtree: true });
 
     // 处理信息按钮点击
     delegateEvent(document, 'click', '#pv-bar-meta', () => {
       const $metaConEL = document.querySelector('#pv-metadata-container')
-
       if ($metaConEL) {
         $metaConEL.remove()
         return
@@ -174,11 +182,7 @@
 
   // 添加元数据容器
   function addMetadataContainer({ prompt, negative, params, data }) {
-    const $container = document.querySelector('#pv-metadata-container'); // 元数据容器
-
-    if ($container) {
-      $container.remove();
-    }
+    const $container = document.querySelector('#pv-metadata-container')?.remove();
 
     const $bottombar = document.querySelector('#pv-bottombar'); // 底部工具栏
     const $metaContainer = `
@@ -270,7 +274,7 @@
     })
   }
 
-  function debunce(fn, wait, immediate) {
+  function debounce(fn, wait, immediate) {
     let timeout;
 
     return function () {
